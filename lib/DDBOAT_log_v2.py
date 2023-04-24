@@ -48,13 +48,13 @@ class LogRecorder:
         try:
             tl, tr = temperature_.read_temp()
             # print("temperatures l,r %d %d"%(tl,tr))
-            self.msg = self.msg + "Heat %d %d /" % (tl, tr)
+            self.msg = self.msg + "/Heat %d %d /" % (tl, tr)
         except:
             logging.error("can't log the temprerature")
             tl, tr = -1, -1
         try:
             data = ard_.get_arduino_cmd_motor()
-            self.msg = self.msg + "Cmd " + str(data) + " /"
+            # self.msg = self.msg + "Cmd " + str(data) + " /"
         except:
             data = -1
             logging.error("can't log the motor command")
@@ -99,16 +99,16 @@ class LogRecorder:
         except:
             self.msg = self.msg
         
-        self.msg = self.msg + "VD " + str(vd) + " WD " + str(wd) + " "
-        self.msg = self.msg + "WML " + str(Wmleft) + " WMR " + str(Wmright) + " "
-        self.msg = self.msg + "CMDL " + str(CmdL) + " CMDR " + str(CmdR) + " "
+        self.msg = self.msg + "VD " + str(vd) + " WD " + str(wd) + " /"
+        self.msg = self.msg + "WML " + str(Wmleft) + " WMR " + str(Wmright) + " /"
+        self.msg = self.msg + "CMDL " + str(CmdL) + " CMDR " + str(CmdR) + " /"
         self.msg = self.msg + "THETA " + str(th) + " /"
 
         if Kal:  # log kalman filter if it exist
             X = str(Kal.X.tolist())
             g = str(Kal.Gamma.tolist())
             Y = str(Kal.y.tolist())
-            self.msg = self.msg + "Xhat " + X + " COV" + g + " /"
+            self.msg = self.msg + "Xhat " + X + " /COV" + g + " /"
         return
 
     def log_update_write(self):  # write and reset the message

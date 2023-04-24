@@ -19,7 +19,6 @@ rho = 10  # m circle radius
 CONS = ConsensusController(p0, th0, rho)
 while time.time() < mp.time_mission_max:
     mp.measure(cmdL, cmdR)
-    print("current position:", mp.kal.p().T)
 
     # controller update
     Lp = [mp.kal.p(), mp.kal.p()]  # TODO update to have the measurement of the other robots
