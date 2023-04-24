@@ -44,6 +44,7 @@ class DdboatFilter:
         self.rho = 6371009  # radius of the earth (m)
         self.A, self.b = A, b  # calibration parameters of the compass
         self.beta = 46000  # nT, norm of the magnetic field
+        print("filter initialized")
 
     def measure_wm(self, data_encoders, t_boucle):  # measure the rational speed of the motors (turn/sec)
         # data_encoders : data from encod.read_packet()

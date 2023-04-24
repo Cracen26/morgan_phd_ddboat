@@ -138,7 +138,7 @@ def init_drivers():  # test connection to sensors and return sensor class
     except:
         imu_ = 0
         print("imu not connected")
-
+    print("DRIVERS INITIALIZED")
     return ard_, temperature_, gps_, encoddrv_, imu_
 
 
