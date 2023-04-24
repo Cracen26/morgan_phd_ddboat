@@ -113,24 +113,28 @@ def init_drivers():  # test connection to sensors and return sensor class
 
     try:
         temperature_ = tc74.TempTC74IO()
+        print("temperature sensor Ok")
     except:
         temperature_ = 0
         print("temperature sensor not connected")
 
     try:
         gps_ = gpsdrv.GpsIO()
+        print("GNSS Ok")
     except:
         gps_ = 0
         print("gpx not connected")
 
     try:
         encoddrv_ = encod.EncoderIO()
+        print("encoder Ok")
     except:
         encoddrv_ = 0
         print("encoder not connected")
 
     try:
         imu_ = imudv.Imu9IO()
+        print("IMU Ok")
     except:
         imu_ = 0
         print("imu not connected")
