@@ -21,6 +21,7 @@ if __name__ == "__main__":
 
     dt = 0.1  # 10hz
     cmdL_old,cmdR_old = 0, 0
+    print("mission started")
     while True:
 
         # measurements
@@ -55,5 +56,5 @@ if __name__ == "__main__":
             time.sleep(delta_t)
         else:
             print("LAG loop frequency reduced, t_execution ", t_execution)
-
+    print("mission ended")
     ard.send_arduino_cmd_motor(0, 0)
