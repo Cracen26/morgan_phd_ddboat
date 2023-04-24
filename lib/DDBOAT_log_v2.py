@@ -48,31 +48,20 @@ class LogRecorder:
         try:
             tl, tr = temperature_.read_temp()
             # print("temperatures l,r %d %d"%(tl,tr))
-            self.msg = self.msg + "Temperature l,r are %d %d deg.C /" % (tl, tr)
+            self.msg = self.msg + "Heat %d %d /" % (tl, tr)
         except:
             logging.error("can't log the temprerature")
             tl, tr = -1, -1
         try:
             data = ard_.get_arduino_cmd_motor()
-            self.msg = self.msg + "cmd motors l,r are " + str(data) + " /"
+            self.msg = self.msg + "Cmd " + str(data) + " /"
         except:
             data = -1
             logging.error("can't log the motor command")
 
         try:
-            gll_ok, val = gps_.read_gll_non_blocking()
-            if gll_ok:
-                self.msg = self.msg + "GPS " + str(val) + " /"
-            else:
-                self.msg = self.msg + "GPS timeout /"
-        except:
-            gll_ok = False
-            val = -1
-            logging.error("can't log the GPS")
-
-        try:
             data_encoders = encoder_read(encoddrv_.get_last_value_v2())
-            self.msg = self.msg + "Encoders " + str(data_encoders) + " /"
+            self.msg = self.msg + "Encoder " + str(data_encoders) + " /"
             sync = True
         except:
             sync = False
@@ -83,29 +72,43 @@ class LogRecorder:
             mag = imu_.read_mag_raw()
             accel = imu_.read_accel_raw()
             gyro = imu_.read_gyro_raw()
-            self.msg = self.msg + "IMU: MAG " + str(mag) + " ACCEL " + str(accel) + " GYRO " + str(gyro) + " /"
+            self.msg = self.msg + "IMU_MAG " + str(mag) + " /IMU_ACC " + str(accel) + " /IMU_GYRO " + str(gyro) + " /"
         except:
             mag, accel, gyro = [], [], []
             logging.error("can't log the imu")
+
+        try:
+            gll_ok, val = gps_.read_gll_non_blocking()
+            if gll_ok:
+                self.msg = self.msg + "G " + str(val) + " /"
+            else:
+                self.msg = self.msg + "GPS timeout /"
+        except:
+            gll_ok = False
+            val = -1
+            logging.error("can't log the GPS")
+
+
+
+
         return tl, tr, data, gll_ok, val, sync, data_encoders, mag, accel, gyro
 
     def log_control_update(self, vd, wd, Wmleft, Wmright,CmdL,CmdR,pd, th,Kal=None):
         try:  # log desired pose
-            self.msg = self.msg + "DESIREDPOSITION " + str(pd.tolist()) + " /"
+            self.msg = self.msg + "PD " + str(pd.tolist()) + " /"
         except:
             self.msg = self.msg
         
-        self.msg = self.msg + "CONTROL: VD " + str(vd) + " WD " + str(wd) + " "
-        self.msg = self.msg + "WMLEFT " + str(Wmleft) + " WMRIGHT " + str(Wmright) + " "
+        self.msg = self.msg + "VD " + str(vd) + " WD " + str(wd) + " "
+        self.msg = self.msg + "WML " + str(Wmleft) + " WMR " + str(Wmright) + " "
         self.msg = self.msg + "CMDL " + str(CmdL) + " CMDR " + str(CmdR) + " "
         self.msg = self.msg + "THETA " + str(th) + " /"
 
         if Kal:  # log kalman filter if it exist
             X = str(Kal.X.tolist())
             g = str(Kal.Gamma.tolist())
-            U = str(Kal.u.tolist())
             Y = str(Kal.y.tolist())
-            self.msg = self.msg + "KAL: STATE " + X + " COVARIANCE " + g + " INPUT " + U + " OUTPUT " + Y + " /"
+            self.msg = self.msg + "Xhat " + X + " COV" + g + " /"
         return
 
     def log_update_write(self):  # write and reset the message
