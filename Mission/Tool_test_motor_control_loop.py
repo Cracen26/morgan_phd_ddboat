@@ -2,7 +2,7 @@
 
 import sys
 from lib.DDBOAT_filter_v2 import *
-from lib.DDBOAT_log_v2 import init_drivers, time
+from lib.DDBOAT_log_v2 import init_drivers, time, encoder_read
 
 if __name__ == "__main__":
     try:
@@ -27,7 +27,8 @@ if __name__ == "__main__":
         # measurements
         t = time.time()
         try:
-            sync, data_encoders = encoddrv.read_packet()
+            data_encoders = encoder_read(encoddrv.get_last_value_v2())
+            sync = True
         except:
             sync = False
             data_encoders = []

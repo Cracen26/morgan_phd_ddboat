@@ -10,7 +10,7 @@
 
 from lib.DDBOAT_controler_v2 import *
 from lib.DDBOAT_filter_v2 import DdboatFilter, StateObserver
-from lib.DDBOAT_log_v2 import LogRecorder, init_drivers, time, robot_number
+from lib.DDBOAT_log_v2 import LogRecorder, init_drivers, time, robot_id
 import json
 import sys
 
@@ -22,7 +22,7 @@ class MissionBlock:
 
         # load mission script
         file_script = open("../mission_script/mission_script.json", "r")
-        file_script2 = open("compass_calibration/compass_calibration_ddboat" + robot_number + ".json", "r")
+        file_script2 = open("compass_calibration/compass_calibration_ddboat" + robot_id + ".json", "r")
         data_script = json.load(file_script)
         data_script2 = json.load(file_script2)
         param = data_script["mission_param"]

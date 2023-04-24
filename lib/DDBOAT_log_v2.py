@@ -22,6 +22,16 @@ robot_id = int(robot_id.replace("ddboat",""))
 print("DDBOAT number ",robot_id)
 # record sesors data and store them in a log file under the LOG folder
 
+switchLR = [1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1] # in robot id order
+# if 0 : blue cable is left encodeur, if 1: blue cable is right encodeur
+def encoder_read(data_encoders_str):
+    # convert the raw data encoder to old encodeur list
+    de0 = [int(x) for x in data_encoders_str.split(",")]
+    if switchLR[robot_id-1]: # switch left and right encoder
+        data_encoder = [de0[0],de0[2],de0[1],de0[4],de0[3]]
+    else:
+        data_encoder = de0
+    return data_encoder
 # noinspection PyBroadException
 class LogRecorder:
     def __init__(self,t=None):
@@ -61,8 +71,9 @@ class LogRecorder:
             logging.error("can't log the GPS")
 
         try:
-            sync, data_encoders = encoddrv_.read_packet()
+            data_encoders = encoder_read(encoddrv_.get_last_value_v2())
             self.msg = self.msg + "Encoders " + str(data_encoders) + " /"
+            sync = True
         except:
             sync = False
             data_encoders = []

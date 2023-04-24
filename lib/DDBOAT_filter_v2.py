@@ -8,6 +8,7 @@
 #################################################
 import numpy as np
 from math import cos, sin, pi
+from lib.DDBOAT_log_v2 import encoder_read
 import time
 
 
@@ -38,8 +39,13 @@ def delta_odo (odo1,odo0): # TODO remise à 0 par le sinus car bug quand 2 remis
 
 class DdboatFilter:
     def __init__(self, lxm, lym, A, b, encoddrv):
-        sync, data_encoders = encoddrv.read_packet()
+        print("filter initialization")
+        data_encoders = encoder_read(encoddrv.get_last_value_v2())
+        print("initial data encoder is ", data_encoders)
         self.odoLeft, self.odoRight = data_encoders[3], data_encoders[4]  # memorised position of the motors' encoder
+        self.lastOdoTime = data_encoders[0] # time of the last odometer measurement
+        self.wmLeft, self.wmRight = 0.0, 0.0 # memorised speed of the motors
+        print("Initial odometers are ", self.odoLeft,"/", self.odoRight)
         self.lxm, self.lym = lxm, lym,  # longitude and latitude of the origin
         self.rho = 6371009  # radius of the earth (m)
         self.A, self.b = A, b  # calibration parameters of the compass
@@ -49,14 +55,17 @@ class DdboatFilter:
     def measure_wm(self, data_encoders, t_boucle):  # measure the rational speed of the motors (turn/sec)
         # data_encoders : data from encod.read_packet()
         # t_boucle : period of the update (s)
-        sensLeft, sensRight = data_encoders[1], data_encoders[2]
-        odoLeft, odoRight = data_encoders[3], data_encoders[4]  # 0 to 65536=2**16 tics
-        dodoLeft = abs(delta_odo(odoLeft,self.odoLeft)) # always positive
-        dodoRight = abs(delta_odo(odoRight,self.odoRight)) 
-        self.odoLeft, self.odoRight = odoLeft, odoRight
-        wmLeft = dodoLeft / 8 / t_boucle  # 8 tics = 1 turn
-        wmRight = dodoRight / 8 / t_boucle
-        return wmLeft, wmRight
+        odoTime = data_encoders[0]
+        dTime = odoTime - self.lastOdoTime
+        if abs(dTime) > 1: # update speed every 2 odo measurement
+            odoLeft, odoRight = data_encoders[3], data_encoders[4]  # 0 to 65536=2**16 tics
+            dodoLeft = abs(delta_odo(odoLeft,self.odoLeft)) # always positive
+            dodoRight = abs(delta_odo(odoRight,self.odoRight))
+            self.odoLeft, self.odoRight = odoLeft, odoRight
+            self.wmLeft = dodoLeft / 8 / (0.1*dTime)  # 8 tics = 1 turn
+            self.wmRight = dodoRight / 8 / (0.1*dTime)
+            self.lastOdoTime = odoTime
+        return self.wmLeft, self.wmRight
 
     @staticmethod
     def cvt_gll_ddmm_2_dd(val):  # get lat lon from gps raw data val
