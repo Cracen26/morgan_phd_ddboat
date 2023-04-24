@@ -99,9 +99,9 @@ class LogRecorder:
         except:
             self.msg = self.msg
         
-        self.msg = self.msg + "VD " + str(vd) + " WD " + str(wd) + " /"
-        self.msg = self.msg + "WML " + str(Wmleft) + " WMR " + str(Wmright) + " /"
-        self.msg = self.msg + "CMDL " + str(CmdL) + " CMDR " + str(CmdR) + " /"
+        self.msg = self.msg + "VD " + str(vd) + " /WD " + str(wd) + " /"
+        self.msg = self.msg + "WML " + str(Wmleft) + " /WMR " + str(Wmright) + " /"
+        self.msg = self.msg + "CMDL " + str(CmdL) + " /CMDR " + str(CmdR) + " /"
         self.msg = self.msg + "THETA " + str(th) + " /"
 
         if Kal:  # log kalman filter if it exist
