@@ -149,7 +149,7 @@ class MissionBlock:
             self.ard.send_arduino_cmd_motor(cmdL_, cmdR_)
 
             self.log_rec.log_control_update(vd, wd, self.wmLeft, self.wmRight, cmdL_, cmdR_, self.home_pos, self.y_th, self.kal)
-            self.kal.Kalman_update(0, self.y_th)  # kalman prediction
+            self.kal.Kalman_update(self.y_th)  # kalman prediction
             self.log_rec.log_update_write()  # write in the log file
 
             # loop update

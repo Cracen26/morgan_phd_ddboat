@@ -183,18 +183,18 @@ class StateObserver:
     def p_dot(self):  # robot speed vector
         return np.array([[self.X[2, 0] * cos(self.th) + self.X[3, 0], self.X[2, 0] * sin(self.th) + self.X[4, 0]]]).T
 
-    def Kalman_update(self, u,th):  # time update based on the movement of the robot
+    def Kalman_update(self, th):  # time update based on the movement of the robot
         # u : [acceleration, angular velocity] control signal
-        self.u,self.th = u,th
+        self.th = th
         Ak = np.eye(5) + self.dt * np.array(
             [[0, 0, cos(self.th), 1, 0],
              [0, 0, sin(self.th), 0, 1],
              [0, 0, 0, 0, 0],
-             [0, 0, 0, 0,0],
+             [0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0]])
         self.X = self.X + self.dt * np.array([[self.X[2,0] * cos(self.th)+self.X[3,0]],
                                               [self.X[2,0] * sin(self.th)+self.X[4,0]],
-                                              [u[0, 0]],
+                                              [0],
                                               [0],
                                               [0]])
         self.Gamma = Ak @ self.Gamma @ Ak.T + self.Gamma_alpha

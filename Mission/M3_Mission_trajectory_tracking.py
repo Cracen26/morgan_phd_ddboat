@@ -32,20 +32,15 @@ while time.time() < mp.time_mission_max:
             # pd_ddot = np.reshape(np.array([traj_k["pd_ddot"]]), (2, 1))
             k += 1
         except:  # end of the trajectory
-            if np.linalg.norm(mp.home_pos-mp.kal.p())>20: # return home
-                print("end of the trajectory, return home")
-                pd = mp.home_pos
-                # pd_dot, pd_ddot = np.zeros((2,1)), np.zeros((2,1))
-            else:
-                print("end of the mission, break !")
-                break
+            print("end of the trajectory, return home")
+            break
 
         vd = 1.
         wd = control_follow_point(mp.kal.p(),pd,mp.kal.th)
         cmdL, cmdR = convert_motor_control_signal(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, mp.dt)
     mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
     mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, pd, mp.y_th, mp.kal)
-    mp.kal.Kalman_update(0, mp.y_th)
+    mp.kal.Kalman_update(mp.y_th)
     mp.log_rec.log_update_write()  # write in the log file
 
     # loop update

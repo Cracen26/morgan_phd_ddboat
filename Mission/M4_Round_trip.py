@@ -2,7 +2,7 @@
 
 from lib.DDBOAT_mission_v2 import *
 
-mp = MissionBlock(rh=True)
+mp = MissionBlock()
 
 # init variables
 k, pd0, pos_old, t_pos_old, cmdL, cmdR = 0, mp.Lpd[:,[0]], mp.kal.p(), time.time(), 0, 0
@@ -32,7 +32,7 @@ while time.time() < mp.time_mission_max:
     cmdL,cmdR = convert_motor_control_signal(vd,wd,mp.wmLeft,mp.wmRight,cmdL,cmdR,mp.dt)
     mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
     mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, pd, mp.y_th, mp.kal)
-    mp.kal.Kalman_update(0, mp.y_th)
+    mp.kal.Kalman_update(mp.y_th)
     mp.log_rec.log_update_write()  # write in the log file
 
     # loop update

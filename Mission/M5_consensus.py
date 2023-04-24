@@ -31,9 +31,9 @@ while time.time() < mp.time_mission_max:
     mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
 
     # log update
-    mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, b, mp.y_th,
+    mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, CONS.c, mp.y_th,
                                   mp.kal)
-    mp.kal.Kalman_update(np.zeros((2, 1)), mp.y_th)
+    mp.kal.Kalman_update(mp.y_th)
     mp.log_rec.log_update_write()  # write in the log file
 
     # loop update

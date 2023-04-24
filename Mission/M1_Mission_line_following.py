@@ -50,34 +50,7 @@ while time.time() < mp.time_mission_max:
     cmdL, cmdR = convert_motor_control_signal(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, mp.dt)
     mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
     mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, b, mp.y_th, mp.kal)
-    mp.kal.Kalman_update(np.zeros((2, 1)), mp.y_th)
-    mp.log_rec.log_update_write()  # write in the log file
-
-    # loop update
-    if not mp.wait_for_next_iteration():
-        break
-
-# return home
-while True:
-
-    # measurements
-    mp.measure(cmdL,cmdR)
-
-    # update reference
-    d = np.linalg.norm(mp.home_pos-mp.kal.p())
-    print("home distance",d)
-    if d<10:
-        print("I am home !!!")
-        break
-
-    # control update
-    vd = 2
-    wd = control_follow_point(mp.kal.p(),mp.home_pos,mp.kal.th)
-    cmdL, cmdR = convert_motor_control_signal(vd,wd,mp.wmLeft,mp.wmRight,cmdL,cmdR,mp.dt)
-    mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
-
-    mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, mp.home_pos, mp.y_th, mp.kal)
-    mp.kal.Kalman_update(0, mp.y_th) # kalman prediction
+    mp.kal.Kalman_update(mp.y_th)
     mp.log_rec.log_update_write()  # write in the log file
 
     # loop update

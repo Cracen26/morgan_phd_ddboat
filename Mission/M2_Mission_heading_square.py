@@ -29,7 +29,7 @@ while time.time() < mp.time_mission_max:
     cmdL, cmdR = convert_motor_control_signal(v_d, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, mp.dt)
     mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
     mp.log_rec.log_control_update(v_d, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, np.zeros((2,1)), mp.y_th, mp.kal) # note w and th_d replace u[0,0] and u[1,0]
-    mp.kal.Kalman_update(np.zeros((2,1)), mp.y_th)
+    mp.kal.Kalman_update(mp.y_th)
     mp.log_rec.log_update_write()  # write in the log file
 
     # loop update

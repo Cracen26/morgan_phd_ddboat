@@ -89,13 +89,13 @@ class LogRecorder:
             logging.error("can't log the imu")
         return tl, tr, data, gll_ok, val, sync, data_encoders, mag, accel, gyro
 
-    def log_control_update(self, acc, wd, Wmleft, Wmright,CmdL,CmdR,pd, th,Kal=None):
+    def log_control_update(self, vd, wd, Wmleft, Wmright,CmdL,CmdR,pd, th,Kal=None):
         try:  # log desired pose
             self.msg = self.msg + "DESIREDPOSITION " + str(pd.tolist()) + " /"
         except:
             self.msg = self.msg
         
-        self.msg = self.msg + "CONTROL: ACCD " + str(acc) + " WD " + str(wd) + " "
+        self.msg = self.msg + "CONTROL: VD " + str(vd) + " WD " + str(wd) + " "
         self.msg = self.msg + "WMLEFT " + str(Wmleft) + " WMRIGHT " + str(Wmright) + " "
         self.msg = self.msg + "CMDL " + str(CmdL) + " CMDR " + str(CmdR) + " "
         self.msg = self.msg + "THETA " + str(th) + " /"
