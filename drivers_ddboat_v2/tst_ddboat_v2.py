@@ -1,9 +1,9 @@
 import time
 import sys
-import imu9_driver_v2 as imudrv
-import gps_driver_v2 as gpsdrv
-import arduino_driver_v2 as arddrv
-import encoders_driver_v2 as encoddrv
+import drivers_ddboat_v2.imu9_driver_v2 as imudrv
+import drivers_ddboat_v2.gps_driver_v2 as gpsdrv
+import drivers_ddboat_v2.arduino_driver_v2 as arddrv
+import drivers_ddboat_v2.encoders_driver_v2 as encoddrv
 
 imu = imudrv.Imu9IO()
 gps = gpsdrv.GpsIO()

@@ -2,7 +2,7 @@ import struct
 import time
 import sys
 import math
-import i2creal as i2c  # currently only real I2C on ddboats (no simulated I2C)
+import drivers_ddboat_v2.i2creal as i2c  # currently only real I2C on ddboats (no simulated I2C)
 
 # LIS3DML 0x1e  (mag sensor)
 # LSM6    0x6b  (accelero - gyro)

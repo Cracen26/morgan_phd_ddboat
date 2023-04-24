@@ -5,7 +5,7 @@
 # - calibrate
 # - test
 
-import imu9_driver_v2 as imu9drv
+import drivers_ddboat_v2.imu9_driver_v2 as imu9drv
 import numpy as np
 import time
 import sys

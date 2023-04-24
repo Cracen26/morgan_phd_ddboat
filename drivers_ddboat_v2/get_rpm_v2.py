@@ -1,5 +1,5 @@
-import encoders_driver_v2 as encdrv
-import arduino_driver_v2 as ardudrv
+import drivers_ddboat_v2.encoders_driver_v2 as encdrv
+import drivers_ddboat_v2.arduino_driver_v2 as ardudrv
 import sys
 import time
 import numpy as np

@@ -1,4 +1,4 @@
-import encoders_driver_v2 as encdrv
+import drivers_ddboat_v2.encoders_driver_v2 as encdrv
 
 if __name__ == "__main__":
     encoddrv = encdrv.EncoderIO()

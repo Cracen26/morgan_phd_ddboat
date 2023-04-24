@@ -1,6 +1,6 @@
 import time
 import sys
-import gps_driver_v2 as gpsdrv
+import drivers_ddboat_v2.gps_driver_v2 as gpsdrv
 import gpxpy.gpx
 
 # record GPS (GPGLL ) in a GPX file
