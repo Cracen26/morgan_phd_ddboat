@@ -1,0 +1,29 @@
+{
+    "mission_param": {
+        "mission_robot_id": 1,
+        "lxm": -3.014790,
+        "lym": 48.199024,
+        "home_lat": 48.199024,
+        "home_lon": -3.014790,
+        "Gamma0": [
+            10,
+            10,
+            1,
+            10,
+            10
+        ],
+        "Gamma_alpha": [
+            0.5,
+            0.5,
+            0.1,
+            0.0001,
+            0.0001
+        ],
+        "Gamma_beta": [
+            0.1,
+            0.1
+        ],
+        "dt": 0.1,
+        "duration_mission_max": 600
+    }
+}
