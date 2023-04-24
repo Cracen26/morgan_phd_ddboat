@@ -16,13 +16,12 @@ import sys
 
 
 class MissionBlock:
-    def __init__(self, rh):  # mission initialisation
-        # rh = True if the robot need to return home at the end of the mission
+    def __init__(self):  # mission initialisation
         print("robot setup ...")
 
         # load mission script
         file_script = open("../mission_script/mission_script.json", "r")
-        file_script2 = open("compass_calibration/compass_calibration_ddboat" + robot_id + ".json", "r")
+        file_script2 = open("../compass_calibration/compass_calibration_ddboat" + str(robot_id) + ".json", "r")
         data_script = json.load(file_script)
         data_script2 = json.load(file_script2)
         param = data_script["mission_param"]
@@ -86,7 +85,6 @@ class MissionBlock:
         self.kal = StateObserver(X0, y_th, Gamma0, Gamma_alpha, Gamma_beta, self.dt)
 
         # set home
-        self.return_home = rh  # if true, at the en of the mission, the robot return home
         home_lat, home_lon = param["home_lat"], param["home_lon"]
         self.home_pos = self.filt.latlon_to_coord(home_lat, home_lon)
 
@@ -127,3 +125,33 @@ class MissionBlock:
             time.sleep(delta_t)
         else:
             print("LAG loop frequency reduced, t_execution ", t_execution)
+        return True # continue loop
+
+    def auto_home(self,cmdL0, cmdR0):
+        # return home to home_pos
+        cmdL_,cmdR_ = cmdL0,cmdR0
+        while True:
+
+            # measurements
+            self.measure(cmdL_, cmdR_)
+
+            # update reference
+            d = np.linalg.norm(self.home_pos - self.kal.p())
+            print("home distance", d)
+            if d < 10:
+                print("I am home !!!")
+                break
+
+            # control update
+            vd = 2
+            wd = control_follow_point(self.kal.p(), self.home_pos, self.kal.th)
+            cmdL_, cmdR_ = convert_motor_control_signal(vd, wd, self.wmLeft, self.wmRight, cmdL_, cmdR_, self.dt)
+            self.ard.send_arduino_cmd_motor(cmdL_, cmdR_)
+
+            self.log_rec.log_control_update(vd, wd, self.wmLeft, self.wmRight, cmdL_, cmdR_, self.home_pos, self.y_th, self.kal)
+            self.kal.Kalman_update(0, self.y_th)  # kalman prediction
+            self.log_rec.log_update_write()  # write in the log file
+
+            # loop update
+            if not self.wait_for_next_iteration():
+                break

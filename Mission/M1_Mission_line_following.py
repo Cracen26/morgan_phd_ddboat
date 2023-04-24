@@ -3,7 +3,7 @@
 from lib.DDBOAT_controler_v2 import *
 from lib.DDBOAT_mission_v2 import *
 
-mp = MissionBlock(rh=True)  # trajectory is useless
+mp = MissionBlock()  # trajectory is useless
 # init variables
 k, cmdL, cmdR = 0, 0, 0
 
@@ -17,6 +17,7 @@ for i in range(len(waypoint_list[0])):
     waypoint_list[:, [i]] = pos
 print("waypoint list local:", waypoint_list)
 
+rh = False
 while time.time() < mp.time_mission_max:
 
     mp.measure(cmdL, cmdR)
@@ -29,10 +30,11 @@ while time.time() < mp.time_mission_max:
         print("next line")
         k += 1
         if k > (len(waypoint_list[0]) - 2):
-            print("mission done")
+            print("return home")
+            rh = True
             break
     print(" ")
-
+    
     # update reference
     pd = mp.Lpd[k]
     thd = control_follow_line(a, b, mp.kal.p())
@@ -55,4 +57,32 @@ while time.time() < mp.time_mission_max:
     if not mp.wait_for_next_iteration():
         break
 
+# return home
+while True:
+
+    # measurements
+    mp.measure(cmdL,cmdR)
+
+    # update reference
+    d = np.linalg.norm(mp.home_pos-mp.kal.p())
+    print("home distance",d)
+    if d<10:
+        print("I am home !!!")
+        break
+
+    # control update
+    vd = 2
+    wd = control_follow_point(mp.kal.p(),mp.home_pos,mp.kal.th)
+    cmdL, cmdR = convert_motor_control_signal(vd,wd,mp.wmLeft,mp.wmRight,cmdL,cmdR,mp.dt)
+    mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
+
+    mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, mp.home_pos, mp.y_th, mp.kal)
+    mp.kal.Kalman_update(0, mp.y_th) # kalman prediction
+    mp.log_rec.log_update_write()  # write in the log file
+
+    # loop update
+    if not mp.wait_for_next_iteration():
+        break
+
+mp.auto_home(cmdL,cmdR)
 mp.ard.send_arduino_cmd_motor(0, 0)

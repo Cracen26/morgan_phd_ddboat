@@ -2,7 +2,7 @@
 
 from lib.DDBOAT_mission_v2 import *
 
-mp = MissionBlock(rh=True) # the trajectory is useless
+mp = MissionBlock() # the trajectory is useless
 # init variables
 k, pos_old, t_pos_old, cmdL, cmdR = 0, mp.kal.p(), time.time(), 0, 0
 print("Starting the square mission")
@@ -35,4 +35,6 @@ while time.time() < mp.time_mission_max:
     # loop update
     if not mp.wait_for_next_iteration():
         break
+
+mp.auto_home(cmdL, cmdR)
 mp.ard.send_arduino_cmd_motor(0, 0)

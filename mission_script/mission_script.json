@@ -25,5 +25,6 @@
         ],
         "dt": 0.1,
         "duration_mission_max": 600
-    }
+    },
+    "trajectories":[]
 }

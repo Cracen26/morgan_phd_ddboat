@@ -27,7 +27,7 @@
 import numpy as np
 from math import sin, cos, sqrt
 
-kT, kpwm, kD, kw = 0.01, 1.5, 1, 0.06  # kpwm verified
+kT, kpwm, kD, kw = 0.01, 1.5, 15, 0.06  # kpwm verified
 # m = 2.5  # weight of the DDBOAT (verified)
 umax = 200
 # wlrmax = umax / kpwm

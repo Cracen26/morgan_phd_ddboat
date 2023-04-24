@@ -38,4 +38,6 @@ while time.time() < mp.time_mission_max:
     # loop update
     if not mp.wait_for_next_iteration():
         break
+
+mp.auto_home(cmdL,cmdR)
 mp.ard.send_arduino_cmd_motor(0, 0)

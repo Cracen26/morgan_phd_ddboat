@@ -2,7 +2,7 @@
 
 from lib.DDBOAT_mission_v2 import *
 
-mp = MissionBlock(rh=True)
+mp = MissionBlock()
 # init variables
 k, pos_old, t_pos_old, cmdL, cmdR = 0, mp.kal.p(), time.time(), 0, 0
 pd = mp.Lpd[:,[0]]
@@ -32,7 +32,7 @@ while time.time() < mp.time_mission_max:
             # pd_ddot = np.reshape(np.array([traj_k["pd_ddot"]]), (2, 1))
             k += 1
         except:  # end of the trajectory
-            if mp.return_home and np.linalg.norm(mp.home_pos-mp.kal.p())>20:
+            if np.linalg.norm(mp.home_pos-mp.kal.p())>20: # return home
                 print("end of the trajectory, return home")
                 pd = mp.home_pos
                 # pd_dot, pd_ddot = np.zeros((2,1)), np.zeros((2,1))
@@ -51,4 +51,6 @@ while time.time() < mp.time_mission_max:
     # loop update
     if not mp.wait_for_next_iteration():
         break
+
+mp.auto_home(cmdL,cmdR)
 mp.ard.send_arduino_cmd_motor(0, 0)
