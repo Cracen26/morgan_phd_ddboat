@@ -1,11 +1,11 @@
 # print( heading and local position) while the robot is controller by the remote controller
 
 from lib.DDBOAT_filter_v2 import *
-from lib.DDBOAT_log_v2 import init_drivers, time, robot_number
+from lib.DDBOAT_log_v2 import init_drivers, time, robot_id
 import json
 
 file_script = open("../mission_script/mission_script.json", "r")
-file_script2 = open("compass_calibration/compass_calibration_ddboat"+robot_number+".json", "r")
+file_script2 = open("../compass_calibration/compass_calibration_ddboat"+str(robot_id)+".json", "r")
 data_script = json.load(file_script)
 data_script2 = json.load(file_script2)
 param = data_script["mission_param"]

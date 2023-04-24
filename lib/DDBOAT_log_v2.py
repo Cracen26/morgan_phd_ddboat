@@ -40,7 +40,7 @@ class LogRecorder:
             t=time.localtime(time.time())
         number = str(t.tm_year) + "_" + str(t.tm_mon) + "_" + str(t.tm_mday) + "_" + str(t.tm_hour) + "_" + str(
             t.tm_min)
-        logging.basicConfig(filename='Log/DDBOAT' + robot_id + "_t_" + number + '.log', level=logging.DEBUG,
+        logging.basicConfig(filename='../Log/DDBOAT' + robot_id + "_t_" + number + '.log', level=logging.DEBUG,
                             format='%(asctime)s - %(levelname)s - %(message)s')
         self.msg = ""  # string buffer for log messages
 

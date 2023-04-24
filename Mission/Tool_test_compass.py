@@ -1,10 +1,10 @@
 # display heading
 
 from lib.DDBOAT_filter_v2 import *
-from lib.DDBOAT_log_v2 import init_drivers, time, robot_number
+from lib.DDBOAT_log_v2 import init_drivers, time, robot_id
 import json
 
-filename = "compass_calibration/compass_calibration_ddboat"+robot_number+".json"
+filename = "../compass_calibration/compass_calibration_ddboat"+str(robot_id)+".json"
 
 file_script = open("../mission_script/mission_script.json", "r")
 file_script2 = open(filename, "r")

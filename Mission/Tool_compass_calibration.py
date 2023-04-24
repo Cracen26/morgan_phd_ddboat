@@ -1,12 +1,12 @@
 # Script to calibrate the compass
 
 from lib.DDBOAT_filter_v2 import *
-from lib.DDBOAT_log_v2 import init_drivers, robot_number
+from lib.DDBOAT_log_v2 import init_drivers, robot_id
 
 import json
 
 # load mission script
-filename = "compass_calibration/compass_calibration_ddboat"+robot_number+".json"
+filename = "../compass_calibration/compass_calibration_ddboat"+str(robot_id)+".json"
 file_script = open(filename,"r")
 data_script = json.load(file_script)
 
