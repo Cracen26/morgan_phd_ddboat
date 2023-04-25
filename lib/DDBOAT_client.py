@@ -41,7 +41,7 @@ class Client(threading.Thread):
                     self.send(msg)
                 else: # store the data of the other agents
                     answer = answer.split(",")
-                    if answer[1] != self.my_data[0]: # if it is the data of another agent
+                    if int(answer[1]) != self.my_data[0]: # if it is the data of another agent
                         answer = [float(answer[x]) for x in range(1,len(answer))]
                         new = True
                         for i in range(len(self.other_data)):

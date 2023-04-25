@@ -219,8 +219,8 @@ class ConsensusController:  # controller for the consensus of the DDBOAT circles
     def __init__(self, p0, th0, rho):
         self.rho = rho  # radius of the circle
 
-        # center of the circle initialized on the left of the robot
-        self.c = self.pc = np.array([[p0[0, 0] - rho * sin(th0), self.rho * cos(th0)]]).T
+        # center of the circle initialized 10m north from the robot
+        self.c = self.pc = np.array([[p0[0, 0], p0[1,0]+self.rho]]).T
 
     def compute_angular_speed(self, p, th, Lp):
         # compute the desired angular speed of the robot
