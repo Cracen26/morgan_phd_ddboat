@@ -105,7 +105,7 @@ def point_consensus(pc, Lpc, d):
     f = np.array([[0., 0.]]).T
     for i in range(0, n):
         nor = np.linalg.norm(pc - Lpc[i])
-        if nor > 0.1:
+        if nor > 0.001:
             f = f + (Lpc[i] - pc) * (nor - d) / nor
     return f
 
@@ -119,7 +119,7 @@ def vf_repulsion(p, Lp):
     f = np.array([[0., 0.]]).T
     for i in range(0, n):
         nor = np.linalg.norm(p - Lp[i])
-        if nor >0.1:
+        if nor >0.001:
             f = f + alpha * (-Lp[i] + p) / nor ** 2
     return f
 
