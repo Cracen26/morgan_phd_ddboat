@@ -28,21 +28,27 @@ while time.time() < mp.time_mission_max:
     # communication
     my_data = [robot_id, mp.kal.p()[0,0], mp.kal.p()[1,0], CONS.c[0,0], CONS.c[1,0]]
     cl.my_data = my_data
-    other_data = cl.other_data
 
     print("my_data", my_data)
-    print("other_data", other_data)
+    print("other_data", cl.other_data)
 
     # controller update
-    Lp = [mp.kal.p(), mp.kal.p()]  # TODO update to have the measurement of the other robots
+    Lp, Lc = [],[] # other robot data, can be empty
+    for data in cl.other_data:
+        print("data",data)
+        Lp.append(np.array([[data[1], data[2]]]).T)
+        Lc.append(np.array([[data[3], data[4]]]).T)
+    print("Lp is ", Lp)
+    print("Lc is ", Lc)
+
     vd = 1.
     wd = CONS.compute_angular_speed(mp.kal.p(), mp.kal.th, Lp)
-    Lc = [CONS.c, CONS.c]  # TODO update to have the center of the other robots
     CONS.update_point_center(Lc, mp.dt)  # update the center of the circle
     cmdL, cmdR = convert_motor_control_signal(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, mp.dt)
     # mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
 
     # log update
+    print("c is ", CONS.c)
     mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, CONS.c, mp.y_th,
                                   mp.kal)
     mp.kal.Kalman_update(mp.y_th)

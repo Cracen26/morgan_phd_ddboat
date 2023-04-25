@@ -35,22 +35,17 @@ class Client(threading.Thread):
             answer = self.recv(1024)
             if answer:
                 if answer == "UP": # send my data
-                    msg = "DATA,"+ str(self.my_data[0]) + "," + str(self.my_data[1]) +\
+                    msg = "DATA,"+ str(int(self.my_data[0])) + "," + str(self.my_data[1]) +\
                           "," + str(self.my_data[2]) + "," + str(self.my_data[3]) +\
                           "," + str(self.my_data[4])
                     self.send(msg)
                 else: # store the data of the other agents
                     answer = answer.split(",")
-                    if int(answer[1]) != self.my_data[0]: # if it is the data of another agent
+                    if int(answer[1]) != 0: # if it is the data of another agent
                         answer = [float(answer[x]) for x in range(1,len(answer))]
-                        new = True
-                        for i in range(len(self.other_data)):
-                            if self.other_data[i][0] == answer[0]:
-                                self.other_data[i] = answer
-                                new = False
-                                break
-                        if new:
-                            self.other_data.append(answer)
+                        self.other_data = [] # reset
+                        for i in range(len(answer)//5):
+                            self.other_data.append(answer[i*5:i*5+5])
                     time.sleep(1)
 
 
