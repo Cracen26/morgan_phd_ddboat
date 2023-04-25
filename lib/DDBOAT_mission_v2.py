@@ -144,7 +144,8 @@ class MissionBlock:
 
             # control update
             vd = 2
-            wd = control_follow_point(self.kal.p(), self.home_pos, self.kal.th)
+            wd = vd*control_follow_point(self.kal.p(), self.home_pos, self.kal.th)
+            print("wd ",wd)
             cmdL_, cmdR_ = convert_motor_control_signal(vd, wd, self.wmLeft, self.wmRight, cmdL_, cmdR_, self.dt)
             self.ard.send_arduino_cmd_motor(cmdL_, cmdR_)
 

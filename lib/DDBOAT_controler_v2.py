@@ -50,7 +50,7 @@ def control_heading(th_d, th):
     # th_d: desired heading (rad)
     # th: current heading (rad)
     # return the desired angular speed (rad/s)
-    K = 0.5  # controller gain
+    K = 1.  # controller gain
     wd = K * sawtooth(th_d - th)
     return wd
 
