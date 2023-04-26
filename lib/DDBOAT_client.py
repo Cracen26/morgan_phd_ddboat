@@ -45,7 +45,8 @@ class Client(threading.Thread):
                         answer = [float(answer[x]) for x in range(1,len(answer))]
                         self.other_data = [] # reset
                         for i in range(len(answer)//5):
-                            self.other_data.append(answer[i*5:i*5+5])
+                            if int(answer[i*5]) != 0:
+                                self.other_data.append(answer[i*5:i*5+5])
                     time.sleep(1)
 
 

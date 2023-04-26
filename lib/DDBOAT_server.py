@@ -77,5 +77,5 @@ class Server(threading.Thread):
         self.s.close()
 
 if __name__ == "__main__":
-    server = Server(agent_number=2)
+    server = Server(agent_number=3)
     server.start()
