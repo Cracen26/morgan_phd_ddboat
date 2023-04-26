@@ -45,7 +45,7 @@ class Server(threading.Thread):
         return msg
     def threaded(self, c):
         while True:
-            self.send("UP",c)  # ask the agent to give their data
+            # self.send("UP",c)  # ask the agent to give their data
 
             msg = c.recv(1024)
             msg = msg.decode()
@@ -75,6 +75,7 @@ class Server(threading.Thread):
             # Start a new thread and return its identifier
             start_new_thread(self.threaded, (c,))
         self.s.close()
+        print("Server closed")
 
 if __name__ == "__main__":
     server = Server(agent_number=3)

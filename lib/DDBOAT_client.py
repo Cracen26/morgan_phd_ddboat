@@ -32,22 +32,26 @@ class Client(threading.Thread):
     def run(self):
         self.connect()
         while self.connected:
+            # SEND DATA
+            msg = "DATA," + str(int(self.my_data[0])) + "," + str(self.my_data[1]) + \
+                  "," + str(self.my_data[2]) + "," + str(self.my_data[3]) + \
+                  "," + str(self.my_data[4])
+            self.send(msg)
+
+            # RECEIVE DATA
             answer = self.recv(1024)
             if answer:
-                if answer == "UP": # send my data
-                    msg = "DATA,"+ str(int(self.my_data[0])) + "," + str(self.my_data[1]) +\
-                          "," + str(self.my_data[2]) + "," + str(self.my_data[3]) +\
-                          "," + str(self.my_data[4])
-                    self.send(msg)
-                else: # store the data of the other agents
-                    answer = answer.split(",")
-                    if int(answer[1]) != 0: # if it is the data of another agent
-                        answer = [float(answer[x]) for x in range(1,len(answer))]
-                        self.other_data = [] # reset
-                        for i in range(len(answer)//5):
-                            if int(answer[i*5]) != 0:
-                                self.other_data.append(answer[i*5:i*5+5])
-                    time.sleep(1)
+                # if answer == "UP": # send my data
+
+                # else: # store the data of the other agents
+                answer = answer.split(",")
+                if int(answer[1]) != 0: # if it is the data of another agent
+                    answer = [float(answer[x]) for x in range(1,len(answer))]
+                    self.other_data = [] # reset
+                    for i in range(len(answer)//5):
+                        if int(answer[i*5]) != 0:
+                            self.other_data.append(answer[i*5:i*5+5])
+            time.sleep(1)
 
 
 if __name__ == "__main__":

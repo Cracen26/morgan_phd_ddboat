@@ -37,8 +37,8 @@ while time.time() < mp.time_mission_max:
     for data in cl.other_data:
         Lp.append(np.array([[data[1], data[2]]]).T)
         Lc.append(np.array([[data[3], data[4]]]).T)
-    print("Lp is ", Lp)
-    print("Lc is ", Lc)
+    # print("Lp is ", Lp)
+    # print("Lc is ", Lc)
 
     vd = 1.2
     wd = CONS.compute_angular_speed(mp.kal.p(), mp.kal.th, Lp)
@@ -47,7 +47,8 @@ while time.time() < mp.time_mission_max:
     mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
 
     # log update
-    print("c is ", CONS.c)
+    print("c is ", CONS.c.T)
+    print(" --- ")
     mp.log_rec.log_control_update(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, CONS.c, mp.y_th,
                                   mp.kal)
     mp.kal.Kalman_update(mp.y_th)
