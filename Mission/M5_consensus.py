@@ -40,9 +40,9 @@ while time.time() < mp.time_mission_max:
     print("Lp is ", Lp)
     print("Lc is ", Lc)
 
-    vd = 1.
+    vd = 1.2
     wd = CONS.compute_angular_speed(mp.kal.p(), mp.kal.th, Lp)
-    CONS.update_point_center(Lc, mp.dt)  # update the center of the circle
+    CONS.update_point_center(Lc, 0.01*mp.dt)  # update the center of the circle
     cmdL, cmdR = convert_motor_control_signal(vd, wd, mp.wmLeft, mp.wmRight, cmdL, cmdR, mp.dt)
     mp.ard.send_arduino_cmd_motor(cmdL, cmdR)
 
