@@ -229,7 +229,7 @@ class ConsensusController:  # controller for the consensus of the DDBOAT circles
         vfc = vf_circle(p, 1, self.rho, self.c)  # vector field of the circle
         vfr = vf_repulsion(p, Lp)  # vector field of the repulsion
         scal = (vfr.T @ np.array([[cos(th), sin(th)]]).T)[0, 0]
-        scal = max(-0.2, min(0., scal) / 100.) # increase circle radius if asked to slow down = lower angular speed
+        scal = max(-2., min(0., scal) / 2.) # increase circle radius if asked to slow down = lower angular speed
         vf = vfc  # vector field followed by the robot
         thd = np.arctan2(vf[1, 0], vf[0, 0])  # desired heading
         wd = control_heading(thd, th)+scal  # desired angular speed
